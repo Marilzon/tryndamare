@@ -33,8 +33,9 @@ export_dump_command = [
 try:
     subprocess_env = dict(PGPASSWORD=source_config["password"])
     subprocess.run(export_dump_command, env=subprocess_env, check=True)
+    print("export dump success")
 except Exception as e:
-    print(f"pg_dump error: {e}")
+    print(f"export dump error: {e}")
 
 import_dump_command = [
     "psql",
@@ -52,5 +53,6 @@ import_dump_command = [
 try:
     subprocess_env = dict(PGPASSWORD=target_config["password"])
     subprocess.run(import_dump_command, env=subprocess_env, check=True)
+    print("import dump success")
 except Exception as e:
-    print(f"psql load error: {e}")
+    print(f"import dump error: {e}")
