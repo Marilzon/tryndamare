@@ -1,5 +1,6 @@
 import subprocess, time
 from definitions import source_config, target_config
+from pprint import pprint
 
 def wait_for_db(host, timeout=30):
     start_time = time.time()
@@ -8,7 +9,7 @@ def wait_for_db(host, timeout=30):
             result = subprocess.run(
                 ["pg_isready", "-h", host], check=True, capture_output=True, text=True)
             if "accepting connections" in result.stdout:
-                print(f"Successfully connected to PostgreSQL: {host}")
+                pprint(f"Successfully connected to PostgreSQL: {host}")
                 return True
         except:
             time.sleep(2)
@@ -33,9 +34,9 @@ export_dump_command = [
 try:
     subprocess_env = dict(PGPASSWORD=source_config["password"])
     subprocess.run(export_dump_command, env=subprocess_env, check=True)
-    print("export dump success")
+    pprint("export dump success")
 except Exception as e:
-    print(f"export dump error: {e}")
+    pprint(f"export dump error: {e}")
 
 import_dump_command = [
     "psql",
@@ -53,6 +54,6 @@ import_dump_command = [
 try:
     subprocess_env = dict(PGPASSWORD=target_config["password"])
     subprocess.run(import_dump_command, env=subprocess_env, check=True)
-    print("import dump success")
+    pprint("import dump success")
 except Exception as e:
-    print(f"import dump error: {e}")
+    pprint(f"import dump error: {e}")
